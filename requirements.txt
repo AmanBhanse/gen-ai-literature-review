@@ -1,0 +1,8 @@
+# Python dependencies for Gen-AI Literature Review System
+
+tiktoken
+scholarly
+autogen-agentchat
+autogen-ext
+openai
+rouge-score
