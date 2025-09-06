@@ -53,6 +53,19 @@ python main.py
 
 - Or, use `main.ipynb` for step-by-step experimentation in Jupyter Notebook.
 
+## Deactivating the Virtual Environment
+
+- **macOS/Linux:**
+  ```sh
+  deactivate
+  ```
+- **Windows:**
+  ```bat
+  .\venv\Scripts\deactivate.bat
+  ```
+
+This will return you to your system's default Python environment.
+
 ## Notes
 
 - The system uses Google Scholar for paper search and LLMs for summarization and review generation.
