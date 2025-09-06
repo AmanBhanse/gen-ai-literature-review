@@ -28,9 +28,37 @@ from workflows import (
 )
 from metrics import calculate_rouge_score
 import asyncio
+import sys
+import openai
+
+
+# --- Pre-check Section ---
+def precheck():
+    """
+    Checks for required configuration and API key validity.
+    """
+    print("\n[Pre-check] Verifying configuration and API access...")
+    # Check GROQ API Key
+    if not GROQ_API_KEY or not isinstance(GROQ_API_KEY, str) or not GROQ_API_KEY.startswith("gsk_"):
+        print("[ERROR] GROQ_API_KEY is missing or invalid. Please update config.py with a valid key.")
+        sys.exit(1)
+    # Try a simple OpenAI API call to check key validity (using groq endpoint)
+    try:
+        client = openai.OpenAI(
+            api_key=GROQ_API_KEY,
+            base_url="https://api.groq.com/openai/v1"
+        )
+        # List models as a lightweight test
+        _ = client.models.list()
+        print("[OK] GROQ API key is valid and Groq endpoint is reachable.")
+    except Exception as e:
+        print(f"[ERROR] Failed to validate GROQ API key or reach Groq endpoint: {e}")
+        sys.exit(1)
+    print("[Pre-check] All checks passed.\n")
 
 
 def main():
+    precheck()
     """
     Main function to run the literature review workflow and compare with human-written review.
     """
