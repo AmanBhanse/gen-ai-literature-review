@@ -1,12 +1,21 @@
-# agents.py
-from autogen_agentchat.agents import AssistantAgent
-from autogen_agentchat.teams import RoundRobinGroupChat
-from autogen_agentchat.ui import Console
+# llm_client.py
+# LLM Client Configuration
+# Provides a configured Groq API client for Llama 3.3-70b model
+
 from autogen_ext.models.openai import OpenAIChatCompletionClient
-from autogen_agentchat.conditions import MaxMessageTermination, TextMentionTermination
 from config import GROQ_API_KEY
 
+
 def get_llama3_client():
+    """
+    Get a configured Groq Llama 3.3-70b API client.
+    
+    Uses OpenAI-compatible API to connect to Groq's Llama model.
+    Configured for JSON output, function calling, and chat completion.
+    
+    Returns:
+        OpenAIChatCompletionClient: Configured client ready for use with AutoGen agents
+    """
     model_client = OpenAIChatCompletionClient(
         model="llama-3.3-70b-versatile",
         base_url="https://api.groq.com/openai/v1",
