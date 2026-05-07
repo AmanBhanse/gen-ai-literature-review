@@ -13,6 +13,8 @@ This project automates the process of generating a literature review using a mul
 ├── requirements.txt    # Python dependencies
 ├── utils.py            # Utility functions
 ├── workflows.py        # All async workflows
+├── .env                # Environment variables (do not commit)
+├── .env.example        # Template for environment variables
 ├── .gitignore          # Files and folders to ignore in git
 └── README.md           # This file
 ```
@@ -41,7 +43,19 @@ pip install -r requirements.txt
 
 4. **Configure API Keys**
 
-- The `GROQ_API_KEY` is stored in `config.py`. Replace the placeholder with your actual key if needed.
+Create a `.env` file in the project root directory with your Groq API key:
+
+```sh
+cp .env.example .env
+```
+
+Then edit `.env` and add your actual API key:
+
+```
+GROQ_API_KEY=your_groq_api_key_here
+```
+
+⚠️ **Important**: Never commit the `.env` file to version control. It is ignored by `.gitignore` by default.
 
 5. **Run the Project**
 
@@ -75,7 +89,7 @@ This will return you to your system's default Python environment.
 ## Troubleshooting
 
 - If you see missing package errors, ensure you have installed all dependencies from `requirements.txt`.
-- For API errors, check your API key in `config.py`.
+- For API errors, check that your `.env` file is created and contains a valid `GROQ_API_KEY`.
 - If you see `__pycache__` or other unnecessary files, they are ignored by `.gitignore`.
 
 ## License

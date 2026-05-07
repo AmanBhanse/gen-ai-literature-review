@@ -49,6 +49,10 @@ venv.bak/
 # Logs
 *.log
 
+# Environment variables
+.env
+.env.local
+
 # Ignore PDF and image outputs (optional)
 *.pdf
 *.png

@@ -1,7 +1,17 @@
 # config.py
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # API Keys
-GROQ_API_KEY = "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"
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+if not GROQ_API_KEY:
+    raise ValueError(
+        "GROQ_API_KEY environment variable is not set. "
+        "Please create a .env file in the project root with: GROQ_API_KEY=your_api_key"
+    )
 
 # Output Separators
 OUTPUT_SEPERATOR_START = "-------------- OUTPUT : STARTS ----------------"
