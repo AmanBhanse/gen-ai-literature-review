@@ -15,7 +15,6 @@ This script orchestrates the full workflow:
 import asyncio
 from cli import Validator
 from workflows import literature_review_generator_workflow
-from metrics import calculate_rouge_score
 
 
 def main():
@@ -40,34 +39,11 @@ def main():
     print("\nAI-Generated Literature Review:\n")
     print(ai_gen_literature)
 
-    # Human-written reference for metric comparison
-    human_written = """
-Generative AI, driven by Large Language Models (LLMs), has significantly advanced multi-agent systems (MAS), enabling more intelligent and autonomous operations across various domains.
- The integration of LLMs within MAS has led to enhanced reasoning, planning, and decision-making capabilities,
- positioning them as a promising pathway toward achieving artificial general intelligence. Research on LLM-based MAS highlights their applications in
- communication networks, problem-solving, world simulation, and real-time decision-making. One notable study introduces CommLLM, a multi-agent framework for
- optimizing 6G communications by employing LLMs to retrieve, plan, evaluate, and refine communication strategies through natural language processing. However,
- while LLMs offer substantial improvements in agent collaboration, they face challenges such as data scarcity in specialized domains, limited logical reasoning,
- and the need for better memory and evaluation mechanisms. To address these issues, AutoGen, an open-source framework, enables the construction of LLM-powered multi-agent
- conversational systems, enhancing inter-agent communication and adaptability. Another survey systematically examines LLM-driven MAS, identifying key components like profile,
- perception, self-action, mutual interaction, and evolution as foundational elements for their development. These systems are particularly effective in handling complex tasks
- that require collaboration, such as power grid management and traffic control, where single-agent models fall short. Despite these advancements, critical challenges remain,
- including optimizing task allocation, enhancing reasoning through iterative debates, and managing intricate memory structures to support dynamic interactions. The concept of
- self-adaptive MAS, powered by LLMs, presents a solution by incorporating autonomic computing principles where agents monitor and adjust their behaviors based on real-time concerns.
- This adaptive approach improves communication expressiveness and coordination, reducing the challenges of managing multiple interacting agents in dynamic environments. Additionally,
- LLM-based MAS have demonstrated potential in distributed systems like blockchain, showcasing their versatility in securing and optimizing decentralized networks. While the research
- emphasizes the strengths of these systems, it also underscores the limitations of LLMs in handling layered contexts and their reliance on predefined architectures for decision-making.
- Future work aims to refine these models by incorporating more robust evaluation frameworks, improving memory retention, and enhancing the interpretability of LLM-driven decisions.
- As these systems continue to evolve, their ability to simulate human-like intelligence, reason through complex problems, and interact autonomously will determine their effectiveness
- in real-world applications. The growing body of research on LLM-powered MAS reflects a paradigm shift in AI-driven automation, offering novel insights into the collaborative potential
- of intelligent agents while paving the way for future innovations in generative AI.
-"""
-
-    # Compare using ROUGE metrics
-    print("\nComparing AI-generated review with human-written review using ROUGE metrics...")
-    rouge_scores = calculate_rouge_score(ai_gen_literature, human_written)
-    print("\nROUGE Scores:")
-    print(rouge_scores)
+    # Save final draft to output.txt
+    print("\nSaving final draft to output.txt...")
+    with open("output.txt", "w") as f:
+        f.write(ai_gen_literature)
+    print("✓ Final draft saved to output.txt")
 
 
 if __name__ == "__main__":
