@@ -6,7 +6,7 @@ from autogen_agentchat.teams import RoundRobinGroupChat
 from autogen_agentchat.ui import Console
 from autogen_agentchat.conditions import MaxMessageTermination, TextMentionTermination
 from config import LITERATURE_REVIEW_WORD_COUNT, SINGLE_PAPER_SUMMARY_WORD_COUNT
-from utils import extract_draft_from_message, fetch_google_scholar_papers
+from utils import extract_draft_from_message, fetch_papers
 
 # --- Summarization Workflow ---
 async def summarization_workflow(paper_titles: list):
@@ -34,14 +34,15 @@ Papers to summarize:
 IMPORTANT: Your response must be valid JSON. Include all papers in the single "content" field."""
         return prompt
     
-    print("- Fetching papers from Google Scholar...")
+    print("- Fetching papers (using scholarly with caching)...")
     fetched_papers = []
     for paper in paper_titles:
-        fetch_pap = fetch_google_scholar_papers(paper, 1)
+        fetch_pap = fetch_papers(paper, 1)
         if len(fetch_pap) > 0:
             fetched_papers.append(fetch_pap[0])
             link = fetch_pap[0]["link"]
-            print(f"{' '*3}+ {link}")
+            source = fetch_pap[0].get("source", "unknown")
+            print(f"{' '*3}+ {link} (source: {source})")
     
     summarization_agent = AssistantAgent(
         name="summarization_agent",

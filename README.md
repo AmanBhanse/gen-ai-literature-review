@@ -82,7 +82,18 @@ This will return you to your system's default Python environment.
 
 ## Notes
 
-- The system uses Google Scholar for paper search and LLMs for summarization and review generation.
+- **Paper Search**: The system uses a hybrid approach with caching to fetch papers:
+  - **Primary**: Google Scholar (most reliable, no strict rate limits)
+  - **Caching**: Papers are cached locally in `paper_cache/` to avoid repeated API calls and speed up searches
+  - ⚠️ Note: Semantic Scholar and arXiv both have strict rate limits on free tier; Google Scholar is more reliable
+- **Paper Search Query Simplification**:
+  - Long queries (like full paper titles with author names) are automatically simplified
+  - Extracts key terms to avoid API rate limiting and timeouts
+  - Example: "Advancements in Generative AI... by Author Name" → "Advancements Generative Comprehensive"
+- **Debug Logging** (in `.env`):
+  - `DEBUG_MODE=true` - Shows detailed information about paper fetching and processing
+  - `DEBUG_MODE=false` (default) - Only warnings and errors displayed
+
 - All modular code is in `.py` files for easy reuse and testing.
 - Results are compared to a human-written review using ROUGE metrics.
 

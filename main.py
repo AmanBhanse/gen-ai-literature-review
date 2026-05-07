@@ -55,8 +55,6 @@ def main():
         "The Age of Generative AI and AI-Generated Everything Hongyang Du",
         "Generative AI: A Review on Models and Applications Kuldeep Singh Kaswan Jagjit Singh Dhatterwal",
         "At the Dawn of Generative AI Era: A Tutorial-cum-Survey on New Frontiers in 6G Wireless Intelligence Abdulkadir Celik",
-        "The Internet of Things in the Era of Generative AI: Vision and Challenges Xin Wang",
-        "Accelerating Innovation With Generative AI: AI-Augmented Digital Prototyping and Innovation Methods Volker Bilgram"
     ]
 
     # 3. Run the literature review generator workflow (async)

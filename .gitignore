@@ -63,3 +63,5 @@ venv.bak/
 # Ignore secrets (never commit real secrets!)
 .env
 .env.*
+
+paper_cache
