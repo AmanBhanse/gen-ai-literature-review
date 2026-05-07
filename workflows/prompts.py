@@ -1,7 +1,10 @@
 # workflows/prompts.py
 """Centralized system messages and task prompts for all workflows."""
 
-from config import LITERATURE_REVIEW_WORD_COUNT, SINGLE_PAPER_SUMMARY_WORD_COUNT
+from config_module import default_constants
+
+LITERATURE_REVIEW_WORD_COUNT = default_constants.LITERATURE_REVIEW_WORD_COUNT
+SINGLE_PAPER_SUMMARY_WORD_COUNT = default_constants.SINGLE_PAPER_SUMMARY_WORD_COUNT
 
 
 class PromptGenerator:

@@ -3,7 +3,7 @@
 
 import sys
 import logging
-from config import Settings
+from config_module import Settings
 
 logger = logging.getLogger(__name__)
 

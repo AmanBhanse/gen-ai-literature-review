@@ -8,14 +8,12 @@ import sys
 import time
 from pathlib import Path
 
-# Add parent directory to path to import utils
+# Add parent directory to path to import modules
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from utils import (
-    fetch_papers_google_scholar,
-    fetch_papers_semantic_scholar,
-    fetch_papers_arxiv
-)
+from papers.sources.google_scholar import GoogleScholarSource
+from papers.sources.semantic_scholar import SemanticScholarSource
+from papers.sources.arxiv import ArxivSource
 
 def print_section(title):
     """Print a formatted section header"""
@@ -32,16 +30,17 @@ def test_google_scholar():
     print("Fetching papers...\n")
     
     try:
-        papers = fetch_papers_google_scholar(test_query, num_papers=2)
+        source = GoogleScholarSource()
+        papers = source.fetch(test_query, num_papers=2)
         
         if papers:
             print(f"✅ SUCCESS: Found {len(papers)} paper(s)\n")
             for i, paper in enumerate(papers, 1):
                 print(f"Paper {i}:")
-                print(f"  Title:   {paper.get('title', 'N/A')}")
-                print(f"  Link:    {paper.get('link', 'N/A')}")
-                print(f"  Source:  {paper.get('source', 'N/A')}")
-                print(f"  Summary: {paper.get('summary', 'N/A')[:100]}...\n")
+                print(f"  Title:   {paper.title}")
+                print(f"  Link:    {paper.link}")
+                print(f"  Source:  {paper.source}")
+                print(f"  Summary: {paper.summary[:100]}...\n")
             return True
         else:
             print("❌ FAILED: No papers found")
@@ -60,16 +59,17 @@ def test_semantic_scholar():
     print("Fetching papers...\n")
     
     try:
-        papers = fetch_papers_semantic_scholar(test_query, num_papers=2)
+        source = SemanticScholarSource()
+        papers = source.fetch(test_query, num_papers=2)
         
         if papers:
             print(f"✅ SUCCESS: Found {len(papers)} paper(s)\n")
             for i, paper in enumerate(papers, 1):
                 print(f"Paper {i}:")
-                print(f"  Title:   {paper.get('title', 'N/A')}")
-                print(f"  Link:    {paper.get('link', 'N/A')}")
-                print(f"  Source:  {paper.get('source', 'N/A')}")
-                print(f"  Summary: {paper.get('summary', 'N/A')[:100]}...\n")
+                print(f"  Title:   {paper.title}")
+                print(f"  Link:    {paper.link}")
+                print(f"  Source:  {paper.source}")
+                print(f"  Summary: {paper.summary[:100]}...\n")
             return True
         else:
             print("❌ FAILED: No papers found")
@@ -88,16 +88,17 @@ def test_arxiv():
     print("Fetching papers...\n")
     
     try:
-        papers = fetch_papers_arxiv(test_query, num_papers=2)
+        source = ArxivSource()
+        papers = source.fetch(test_query, num_papers=2)
         
         if papers:
             print(f"✅ SUCCESS: Found {len(papers)} paper(s)\n")
             for i, paper in enumerate(papers, 1):
                 print(f"Paper {i}:")
-                print(f"  Title:   {paper.get('title', 'N/A')}")
-                print(f"  Link:    {paper.get('link', 'N/A')}")
-                print(f"  Source:  {paper.get('source', 'N/A')}")
-                print(f"  Summary: {paper.get('summary', 'N/A')[:100]}...\n")
+                print(f"  Title:   {paper.title}")
+                print(f"  Link:    {paper.link}")
+                print(f"  Source:  {paper.source}")
+                print(f"  Summary: {paper.summary[:100]}...\n")
             return True
         else:
             print("❌ FAILED: No papers found")

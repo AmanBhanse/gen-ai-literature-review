@@ -9,6 +9,7 @@ from papers.sources import (
     GoogleScholarSource,
 )
 from papers.cache import CacheManager
+from config_module import Settings
 
 logger = logging.getLogger(__name__)
 
@@ -49,7 +50,7 @@ class PaperFetcher:
         Args:
             query: Search query
             num_papers: Number of papers to fetch
-            source: Optional source override (uses config.PAPER_SOURCE if not provided)
+            source: Optional source override (uses Settings.PAPER_SOURCE if not provided)
             
         Returns:
             list[Paper]: List of papers or empty list on failure
@@ -64,7 +65,7 @@ class PaperFetcher:
         if not source_name and self.config:
             source_name = getattr(self.config, 'PAPER_SOURCE', 'google_scholar')
         elif not source_name:
-            source_name = 'google_scholar'
+            source_name = Settings.PAPER_SOURCE
         
         if source_name not in self.sources:
             logger.error(f"Unknown source '{source_name}'. Valid options: {list(self.sources.keys())}")
@@ -116,16 +117,13 @@ def fetch_papers(query: str, num_papers: int = 1, source: str = None) -> list:
     """
     global _fetcher
     if _fetcher is None:
-        # Import here to avoid circular dependency
-        from config import PAPER_SOURCE, ENABLE_PAPER_CACHE, OPENALEX_API_KEY
-        
         class SimpleConfig:
             pass
         
         cfg = SimpleConfig()
-        cfg.PAPER_SOURCE = PAPER_SOURCE
-        cfg.OPENALEX_API_KEY = OPENALEX_API_KEY
+        cfg.PAPER_SOURCE = Settings.PAPER_SOURCE
+        cfg.OPENALEX_API_KEY = Settings.OPENALEX_API_KEY
         
-        _fetcher = PaperFetcher(config=cfg, cache_enabled=ENABLE_PAPER_CACHE)
+        _fetcher = PaperFetcher(config=cfg, cache_enabled=Settings.ENABLE_PAPER_CACHE)
     
     return _fetcher.fetch(query, num_papers, source)

@@ -3,7 +3,7 @@
 # Provides a configured Groq API client for Llama 3.3-70b model
 
 from autogen_ext.models.openai import OpenAIChatCompletionClient
-from config import GROQ_API_KEY
+from config_module import Settings
 
 
 def get_llama3_client():
@@ -19,7 +19,7 @@ def get_llama3_client():
     model_client = OpenAIChatCompletionClient(
         model="llama-3.3-70b-versatile",
         base_url="https://api.groq.com/openai/v1",
-        api_key=GROQ_API_KEY,
+        api_key=Settings.GROQ_API_KEY,
         model_info={
             "vision": False,
             "function_calling": True,
