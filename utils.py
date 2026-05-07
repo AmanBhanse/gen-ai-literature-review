@@ -3,9 +3,11 @@ import re
 import json
 import logging
 from scholarly import scholarly
+from config import DEBUG_MODE
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
+# Configure logging based on DEBUG_MODE
+log_level = logging.INFO if DEBUG_MODE else logging.WARNING
+logging.basicConfig(level=log_level, format='%(levelname)s:%(name)s:%(message)s')
 logger = logging.getLogger(__name__)
 
 def extract_draft_from_message_json(last_message):
