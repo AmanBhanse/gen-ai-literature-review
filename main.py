@@ -10,22 +10,8 @@ This script demonstrates the full workflow using the modularized codebase.
 # Example: pip install -r requirements.txt
 
 # 1. Imports Section
-from config import (
-    GROQ_API_KEY,
-    OUTPUT_SEPERATOR_START,
-    OUTPUT_SEPERATOR_END,
-    LITERATURE_REVIEW_WORD_COUNT,
-    SINGLE_PAPER_SUMMARY_WORD_COUNT
-)
-from utils import extract_draft_from_message, fetch_google_scholar_papers
-from agents import get_llama3_client
-from workflows import (
-    summerization_workflow,
-    filter_papers_workflow,
-    literature_review_creation_flow,
-    revising_draft_workflow,
-    literature_review_generator_workflow
-)
+from config import GROQ_API_KEY
+from workflows import literature_review_generator_workflow
 from metrics import calculate_rouge_score
 import asyncio
 import sys
@@ -40,7 +26,7 @@ def precheck():
     print("\n[Pre-check] Verifying configuration and API access...")
     # Check GROQ API Key
     if not GROQ_API_KEY or not isinstance(GROQ_API_KEY, str) or not GROQ_API_KEY.startswith("gsk_"):
-        print("[ERROR] GROQ_API_KEY is missing or invalid. Please update config.py with a valid key.")
+        print("[ERROR] GROQ_API_KEY is missing or invalid. Please check your .env file.")
         sys.exit(1)
     # Try a simple OpenAI API call to check key validity (using groq endpoint)
     try:
