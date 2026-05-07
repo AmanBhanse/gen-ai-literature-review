@@ -3,42 +3,10 @@
 from autogen_agentchat.teams import RoundRobinGroupChat
 from autogen_agentchat.ui import Console
 from autogen_agentchat.conditions import MaxMessageTermination, TextMentionTermination
-from config import LITERATURE_REVIEW_WORD_COUNT
+from workflows.prompts import PromptGenerator
 from utils import extract_draft_from_message
 from agents.literature_review_writer import create_literature_review_writer_agent
 from agents.literature_review_editor import create_literature_review_editor_agent
-
-
-def _get_revision_writer_system_message() -> str:
-    """Generate system message for revision writer agent."""
-    return f"""
-You are a writer who revises literature review drafts based on feedback.
-Update the draft to incorporate user feedback while maintaining {LITERATURE_REVIEW_WORD_COUNT} words.
-
-Return responses as JSON:
-{{
-  "content": "revised literature review text",
-  "word_count": [actual count],
-  "changes_made": "brief description of changes",
-  "status": "revised"
-}}
-"""
-
-
-def _get_revision_editor_system_message() -> str:
-    """Generate system message for revision editor agent."""
-    return f"""
-You are an editor and knowledgeable researcher reviewing revisions.
-Check if the user's requested changes were properly implemented.
-Ensure the review remains {LITERATURE_REVIEW_WORD_COUNT} words and maintains quality.
-
-Return responses as JSON:
-{{
-  "content": "feedback on revision",
-  "approved": true|false,
-  "word_count_ok": true|false
-}}
-"""
 
 
 async def revising_draft_workflow(draft: str):
@@ -51,8 +19,10 @@ async def revising_draft_workflow(draft: str):
     Returns:
         Revised final draft after user feedback loop
     """
-    writer_agent = create_literature_review_writer_agent(_get_revision_writer_system_message())
-    editor_agent = create_literature_review_editor_agent(_get_revision_editor_system_message())
+    prompts = PromptGenerator()
+    
+    writer_agent = create_literature_review_writer_agent(prompts.revision_writer_system_message())
+    editor_agent = create_literature_review_editor_agent(prompts.revision_editor_system_message())
     
     text_mention_termination = TextMentionTermination("TERMINATE")
     max_messages_termination = MaxMessageTermination(max_messages=8)

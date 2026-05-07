@@ -1,33 +1,38 @@
 # config.py
-import os
-from dotenv import load_dotenv
+"""
+Backward compatibility module for configuration.
 
-# Load environment variables from .env file
-load_dotenv()
+This module re-exports settings and constants from the new config_module/
+structure to maintain backward compatibility with existing code.
 
-# API Keys
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-if not GROQ_API_KEY:
-    raise ValueError(
-        "GROQ_API_KEY environment variable is not set. "
-        "Please create a .env file in the project root with: GROQ_API_KEY=your_api_key"
-    )
+New code should prefer direct imports from config_module:
+- from config_module import Settings, Constants
+"""
 
-# Logging Configuration
-DEBUG_MODE = os.getenv("DEBUG_MODE", "false").lower() == "true"
+# Import from new config_module structure
+from config_module import Settings, Constants, default_constants
 
-# Paper Search Configuration
-# Choose ONE paper source: "google_scholar", "arxiv", "semantic_scholar", or "openalex"
-# Note: No fallback chain - uses the selected source only
-PAPER_SOURCE = os.getenv("PAPER_SOURCE", "google_scholar")
+# Re-export as module-level variables for backward compatibility
+GROQ_API_KEY = Settings.GROQ_API_KEY
+DEBUG_MODE = Settings.DEBUG_MODE
+PAPER_SOURCE = Settings.PAPER_SOURCE
+ENABLE_PAPER_CACHE = Settings.ENABLE_PAPER_CACHE
+SEMANTIC_SCHOLAR_API_KEY = Settings.SEMANTIC_SCHOLAR_API_KEY
+OPENALEX_API_KEY = Settings.OPENALEX_API_KEY
 
-# Enable paper caching (local JSON files to avoid repeated API calls)
-ENABLE_PAPER_CACHE = os.getenv("ENABLE_PAPER_CACHE", "true").lower() == "true"
+# Export word counts
+LITERATURE_REVIEW_WORD_COUNT = default_constants.LITERATURE_REVIEW_WORD_COUNT
+SINGLE_PAPER_SUMMARY_WORD_COUNT = default_constants.SINGLE_PAPER_SUMMARY_WORD_COUNT
 
-# Optional API Keys
-SEMANTIC_SCHOLAR_API_KEY = os.getenv("SEMANTIC_SCHOLAR_API_KEY", None)  # For Semantic Scholar (not required)
-OPENALEX_API_KEY = os.getenv("OPENALEX_API_KEY", None)  # For OpenAlex (required if PAPER_SOURCE=openalex)
-
-# Word Counts
-LITERATURE_REVIEW_WORD_COUNT = 500
-SINGLE_PAPER_SUMMARY_WORD_COUNT = 100
+__all__ = [
+    "GROQ_API_KEY",
+    "DEBUG_MODE",
+    "PAPER_SOURCE",
+    "ENABLE_PAPER_CACHE",
+    "SEMANTIC_SCHOLAR_API_KEY",
+    "OPENALEX_API_KEY",
+    "LITERATURE_REVIEW_WORD_COUNT",
+    "SINGLE_PAPER_SUMMARY_WORD_COUNT",
+    "Settings",
+    "Constants",
+]

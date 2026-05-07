@@ -2,53 +2,30 @@
 main.py
 --------
 Entry point for the Gen-AI Literature Review system.
-This script demonstrates the full workflow using the modularized codebase.
+
+This script orchestrates the full workflow:
+1. Validates configuration and API keys
+2. Fetches and summarizes papers
+3. Filters papers for topic relevance
+4. Generates a literature review using multi-agent collaboration
+5. Allows iterative refinement
+6. Compares with human-written review using ROUGE metrics
 """
 
-# 0. Install required packages (if running in a fresh environment)
-# Recommended: Use requirements.txt for reproducibility
-# Example: pip install -r requirements.txt
-
-# 1. Imports Section
-from config import GROQ_API_KEY
+import asyncio
+from cli import Validator
 from workflows import literature_review_generator_workflow
 from metrics import calculate_rouge_score
-import asyncio
-import sys
-import openai
-
-
-# --- Pre-check Section ---
-def precheck():
-    """
-    Checks for required configuration and API key validity.
-    """
-    print("\n[Pre-check] Verifying configuration and API access...")
-    # Check GROQ API Key
-    if not GROQ_API_KEY or not isinstance(GROQ_API_KEY, str) or not GROQ_API_KEY.startswith("gsk_"):
-        print("[ERROR] GROQ_API_KEY is missing or invalid. Please check your .env file.")
-        sys.exit(1)
-    # Try a simple OpenAI API call to check key validity (using groq endpoint)
-    try:
-        client = openai.OpenAI(
-            api_key=GROQ_API_KEY,
-            base_url="https://api.groq.com/openai/v1"
-        )
-        # List models as a lightweight test
-        _ = client.models.list()
-        print("[OK] GROQ API key is valid and Groq endpoint is reachable.")
-    except Exception as e:
-        print(f"[ERROR] Failed to validate GROQ API key or reach Groq endpoint: {e}")
-        sys.exit(1)
-    print("[Pre-check] All checks passed.\n")
 
 
 def main():
-    precheck()
     """
-    Main function to run the literature review workflow and compare with human-written review.
+    Main entry point for the literature review generation workflow.
     """
-    # 2. Define the literature review topic and paper titles
+    # Validate configuration
+    Validator.run_all_checks_or_exit()
+    
+    # Define the literature review topic and paper titles
     literature_topic = "Generative AI"
     paper_titles = [
         "Advancements in Generative AI: A Comprehensive Review of GANs, GPT, Autoencoders, Diffusion Model, and Transformers Staphord Bengesi",
@@ -57,13 +34,13 @@ def main():
         "At the Dawn of Generative AI Era: A Tutorial-cum-Survey on New Frontiers in 6G Wireless Intelligence Abdulkadir Celik",
     ]
 
-    # 3. Run the literature review generator workflow (async)
+    # Run the literature review generator workflow
     print("\nRunning literature review generator workflow...")
     ai_gen_literature = asyncio.run(literature_review_generator_workflow(literature_topic, paper_titles))
     print("\nAI-Generated Literature Review:\n")
     print(ai_gen_literature)
 
-    # 4. Human-written reference for metric comparison
+    # Human-written reference for metric comparison
     human_written = """
 Generative AI, driven by Large Language Models (LLMs), has significantly advanced multi-agent systems (MAS), enabling more intelligent and autonomous operations across various domains.
  The integration of LLMs within MAS has led to enhanced reasoning, planning, and decision-making capabilities,
@@ -86,7 +63,7 @@ Generative AI, driven by Large Language Models (LLMs), has significantly advance
  of intelligent agents while paving the way for future innovations in generative AI.
 """
 
-    # 5. Metric comparison (ROUGE)
+    # Compare using ROUGE metrics
     print("\nComparing AI-generated review with human-written review using ROUGE metrics...")
     rouge_scores = calculate_rouge_score(ai_gen_literature, human_written)
     print("\nROUGE Scores:")
