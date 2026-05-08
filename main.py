@@ -31,6 +31,7 @@ def main():
         "The Age of Generative AI and AI-Generated Everything Hongyang Du",
         "Generative AI: A Review on Models and Applications Kuldeep Singh Kaswan Jagjit Singh Dhatterwal",
         "At the Dawn of Generative AI Era: A Tutorial-cum-Survey on New Frontiers in 6G Wireless Intelligence Abdulkadir Celik",
+        "Earth slope safety factor enhance with zoology protective technologies"
     ]
 
     # Run the literature review generator workflow
